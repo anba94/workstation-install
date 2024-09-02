@@ -161,9 +161,9 @@ git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $ZS
 cd
 rm .bashrc
 rm .zshrc
-cd git/priv
 git clone https://github.com/anba94/dotfiles.git
-cd dotfiles
+mv dotfiles .dotfiles
+cd .dotfiles
 stow .
 
 # Neovim
