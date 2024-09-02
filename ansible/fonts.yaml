@@ -1,0 +1,28 @@
+---
+- name: Install fonts from GitHub repository
+  hosts: localhost
+  become: yes
+  vars:
+    user_home: "{{ lookup('env', 'HOME') }}"  # Retrieves the non-root user's home directory
+  tasks:
+    - name: Ensure the git/priv directory exists (non-root user)
+      become: no
+      file:
+        path: "{{ user_home }}/git/priv"
+        state: directory
+        mode: '0755'
+        
+    - name: Clone the fonts repository (non-root user)
+      become: no
+      git:
+        repo: https://github.com/anba94/fonts.git
+        dest: "{{ user_home }}/git/priv/fonts"
+
+    - name: Copy TTF files to the system fonts directory (root user)
+      copy:
+        src: "{{ user_home }}/git/priv/fonts/"
+        dest: /usr/share/fonts
+        remote_src: yes
+
+    - name: Refresh the font cache (root user)
+      command: fc-cache -f -v
