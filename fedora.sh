@@ -135,8 +135,8 @@ sudo dnf install -y zellij
 
 # Go Apps
 go install github.com/jesseduffield/lazygit@latest
-go install sigs.k8s.io/kind@v0.23.0
-go install github.com/derailed/k9s@latest
+#go install sigs.k8s.io/kind@v0.23.0
+#go install github.com/derailed/k9s@latest
 go install github.com/Gelio/go-global-update@latest
 
 # Starship
