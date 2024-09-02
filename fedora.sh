@@ -72,6 +72,8 @@ sudo dnf install -y \
     kubernetes-client
 echo "Packages installed"
 
+sudo dnf groupupdate Multimedia
+
 echo "Script completed successfully!"
 
 # setup btrfs
