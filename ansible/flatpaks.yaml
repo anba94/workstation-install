@@ -1,0 +1,31 @@
+---
+- name: Install Flatpaks on Fedora
+  hosts: localhost
+  become: yes  # This allows Ansible to run commands with sudo privileges
+
+  tasks:
+    - name: Ensure Flatpak is installed
+      dnf:
+        name: flatpak
+        state: present
+
+    - name: Add Flathub repository
+      command: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      changed_when: false
+
+    - name: Install Flatpaks
+      become: no
+      community.general.flatpak:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - md.obsidian.Obsidian
+        - io.github.zen_browser.zen
+        - org.gnome.World.PikaBackup
+        - com.mattjakeman.ExtensionManager
+        - com.obsproject.Studio
+        - org.onlyoffice.desktopeditors
+        - com.bitwarden.desktop
+        - com.github.tchx84.Flatseal
+        - io.podman_desktop.PodmanDesktop
+        - io.github.flattool.Warehouse
