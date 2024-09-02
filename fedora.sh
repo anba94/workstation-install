@@ -4,11 +4,6 @@
 sudo timedatectl set-timezone Europe/Berlin
 echo "Timezone set to Europe/Berlin"
 
-# Change hostname to bluehat
-read -p "Please enter the new hostname: " new_hostname
-sudo hostnamectl set-hostname $new_hostname
-echo "Hostname changed"
-
 # Update the system
 sudo dnf update -y
 echo "System updated"
