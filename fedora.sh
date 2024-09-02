@@ -123,7 +123,7 @@ sudo dnf copr enable peterwu/rendezvous -y
 sudo dnf install bibata-cursor-themes -y
 
 # Gnome Settings
-gsettings set org.gnome.desktop.interface icon-theme yaru-magenta-dark
+#gsettings set org.gnome.desktop.interface icon-theme yaru-magenta-dark
 gsettings set org.gnome.desktop.wm.preferences focus-mode 'sloppy'
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Ice'
