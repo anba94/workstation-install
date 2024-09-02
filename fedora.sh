@@ -169,17 +169,9 @@ stow .
 # Neovim
 #git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
 
-# Install flatpaks
-flatpak install -y flathub md.obsidian.Obsidian
-flatpak install -y flathub io.github.zen_browser.zen
-flatpak install -y flathub org.gnome.World.PikaBackup
-flatpak install -y flathub com.mattjakeman.ExtensionManager
-flatpak install -y flathub com.obsproject.Studio
-flatpak install -y flathub org.onlyoffice.desktopeditors
-flatpak install -y flathub com.bitwarden.desktop
-flatpak install -y flathub com.github.tchx84.Flatseal
-flatpak install -y flathub io.podman_desktop.PodmanDesktop
-flatpak install -y flathub io.github.flattool.Warehouse
+cd
+cd git/priv
+git clone https://github.com/anba94/workstation-install.git
 
 # change default shell
 chsh -s $(which zsh)
