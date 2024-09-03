@@ -72,9 +72,7 @@ sudo dnf install -y \
     kubernetes-client
 echo "Packages installed"
 
-sudo dnf groupupdate Multimedia
-
-echo "Script completed successfully!"
+sudo dnf groupupdate Multimedia -y
 
 # setup btrfs
 sudo snapper -c root create-config /
