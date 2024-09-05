@@ -4,7 +4,7 @@ mkdir -p git/priv git/others
 
 git clone https://github.com/anba94/workstation-install.git git/priv
 
-sudo dnf install ansible -y
+sudo dnf install -y ansible
 
 echo "Running Ansible playbook 1..."
 ansible-playbook git/priv/workstation-install/ansible/packages.yaml --become
