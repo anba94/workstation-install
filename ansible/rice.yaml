@@ -34,12 +34,6 @@
         name: yaru-icon-theme
         state: present
 
-    - name: Update icon cache for Candy icons
-      shell: gtk-update-icon-cache /usr/share/icons/candy-icons
-
-    - name: Update icon cache for Yaru icons
-      shell: gtk-update-icon-cache /usr/share/icons/Yaru
-
     - name: Install Starship
       shell: curl -sS https://starship.rs/install.sh | sh
       become_user: "{{ ansible_user_id }}"
