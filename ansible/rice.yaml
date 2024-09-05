@@ -1,0 +1,95 @@
+---
+- name: Install Wallpapers, Icons, Cursor Themes, and Additional Software
+  hosts: localhost
+  connection: local
+  become: yes
+  vars:
+    user_home: "{{ ansible_env.HOME }}"
+  tasks:
+    - name: Install Firewatch wallpaper
+      shell: curl -s https://wallpapers.manishk.dev/install.sh | bash -s Firewatch
+
+    - name: Install A Certain Magical Index wallpaper
+      shell: curl -s https://wallpapers.manishk.dev/install.sh | bash -s A_Certain_Magical_Index
+
+    - name: Install Lakeside-2 wallpaper
+      shell: curl -s https://wallpapers.manishk.dev/install.sh | bash -s Lakeside-2
+
+    - name: Install Catalina wallpaper
+      shell: curl -s https://wallpapers.manishk.dev/install.sh | bash -s Catalina
+
+    - name: Enable COPR repository for Bibata cursor themes
+      shell: sudo dnf copr enable peterwu/rendezvous -y
+
+    - name: Install Bibata cursor themes
+      shell: sudo dnf install bibata-cursor-themes -y
+
+    - name: Install Candy icons
+      shell: |
+        git clone https://github.com/EliverLara/candy-icons.git /tmp/candy-icons
+        sudo mv /tmp/candy-icons /usr/share/icons/
+
+    - name: Install Yaru icons
+      dnf:
+        name: yaru-icon-theme
+        state: present
+
+    - name: Update icon cache for Candy icons
+      shell: gtk-update-icon-cache /usr/share/icons/candy-icons
+
+    - name: Update icon cache for Yaru icons
+      shell: gtk-update-icon-cache /usr/share/icons/Yaru
+
+    - name: Install Starship
+      shell: curl -sS https://starship.rs/install.sh | sh
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Install pokemon-colorscript
+      block:
+        - name: Create git/other directory
+          file:
+            path: "{{ user_home }}/git/other"
+            state: directory
+        - name: Clone pokemon-colorscripts repository
+          git:
+            repo: https://gitlab.com/phoneybadger/pokemon-colorscripts.git
+            dest: "{{ user_home }}/git/other/pokemon-colorscripts"
+        - name: Install pokemon-colorscripts
+          shell: sudo ./install.sh
+          args:
+            chdir: "{{ user_home }}/git/other/pokemon-colorscripts"
+
+    - name: Install Oh My Zsh
+      shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Install Oh My Zsh plugins
+      git:
+        repo: "{{ item.repo }}"
+        dest: "{{ user_home }}/.oh-my-zsh/custom/plugins/{{ item.name }}"
+      loop:
+        - { repo: 'https://github.com/zsh-users/zsh-autosuggestions', name: 'zsh-autosuggestions' }
+        - { repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git', name: 'zsh-syntax-highlighting' }
+        - { repo: 'https://github.com/zdharma-continuum/fast-syntax-highlighting.git', name: 'fast-syntax-highlighting' }
+        - { repo: 'https://github.com/marlonrichert/zsh-autocomplete.git', name: 'zsh-autocomplete' }
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Remove existing .bashrc and .zshrc
+      file:
+        path: "{{ user_home }}/{{ item }}"
+        state: absent
+      loop:
+        - .bashrc
+        - .zshrc
+
+    - name: Clone dotfiles repository
+      git:
+        repo: https://github.com/anba94/dotfiles.git
+        dest: "{{ user_home }}/.dotfiles"
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Run stow for dotfiles
+      shell: stow
+      args:
+        chdir: "{{ user_home }}/.dotfiles"
+      become_user: "{{ ansible_user_id }}"
