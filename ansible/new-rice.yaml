@@ -123,3 +123,6 @@
       command: stow --adopt .
       args:
         chdir: "{{ dotfiles_dir }}"
+
+    - name: Install Firewatch wallpaper
+      shell: curl -s https://wallpapers.manishk.dev/install.sh | bash -s Firewatch
