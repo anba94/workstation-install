@@ -23,7 +23,6 @@
       - fzf
       - jq
       - eza
-      - kitty
       - unzip
       - p7zip
       - kitty
@@ -61,10 +60,6 @@
           dnf:
             name: "{{ item }}"
             state: present
-          loop: "{{ packages }}"
-        - name: Print installation message
-          debug:
-            msg: "Installed package: {{ item }}"
           loop: "{{ packages }}"
       when: ansible_distribution == "Fedora"
 
