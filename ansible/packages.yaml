@@ -89,22 +89,6 @@
             (ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 8) or
             (ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8)
 
-    - name: Enable COPR repository for Bibata cursor themes
-      command: dnf copr enable -y peterwu/rendezvous
-      args:
-        creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:peterwu:rendezvous.repo
-      when: ansible_distribution == "Fedora" or 
-            (ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 8) or
-            (ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8)
-
-    - name: Install Bibata cursor themes
-      dnf:
-        name: bibata-cursor-themes
-        state: present
-      when: ansible_distribution == "Fedora" or 
-            (ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 8) or
-            (ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8)
-
     - name: Inform about unsupported distribution
       debug:
         msg: "This playbook is designed for Fedora, CentOS 8+, or RHEL 8+. Your current distribution ({{ ansible_distribution }}) may not be supported."
