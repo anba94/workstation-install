@@ -61,6 +61,19 @@
         state: directory
         mode: '0755'
 
+    - name: Clone Pokemon Color Scripts repository
+      git:
+        repo: https://gitlab.com/phoneybadger/pokemon-colorscripts.git
+        dest: "{{ ansible_env.HOME }}/git/other/pokemon-colorscripts"
+        version: master
+
+    - name: Run installation script
+      command: ./install.sh
+      args:
+        chdir: "{{ ansible_env.HOME }}/git/other/pokemon-colorscripts"
+      register: install_result
+      changed_when: install_result.rc == 0
+
     - name: Clone zsh-autosuggestions plugin
       git:
         repo: https://github.com/zsh-users/zsh-autosuggestions.git
