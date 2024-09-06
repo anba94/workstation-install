@@ -4,7 +4,7 @@
   connection: local
   become: yes
   vars:
-    user: "{{ ansible_user }}"
+    user: "{{ lookup('env', 'USER') }}"
 
   tasks:
     - name: Install required packages
