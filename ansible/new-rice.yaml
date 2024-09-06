@@ -104,6 +104,13 @@
         update: yes
         force: yes
 
+    - name: Install Starship
+      shell: curl -sS https://starship.rs/install.sh | sh
+      args:
+        executable: /bin/bash
+      register: starship_install
+      changed_when: "'Starship is already installed' not in starship_install.stdout"
+
     - name: Delete .zshrc and .bashrc files
       file:
         path: "{{ item }}"
