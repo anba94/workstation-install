@@ -30,6 +30,7 @@
         state: present
 
     - name: Enable COPR repository for Bibata cursor themes
+      become: yes
       command: dnf copr enable -y peterwu/rendezvous
       args:
         creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:peterwu:rendezvous.repo
@@ -38,6 +39,7 @@
             (ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8)
 
     - name: Install Bibata cursor themes
+      become: yes
       dnf:
         name: bibata-cursor-themes
         state: present

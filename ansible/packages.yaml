@@ -46,31 +46,26 @@
       - fontconfig
       - xprop
       - keepassxc
-      - yaru-icon-theme
-
 
   tasks:
-    - name: Update package cache (for Debian/Ubuntu)
-      apt:
-        update_cache: yes
-      when: ansible_os_family == "Debian"
-
-    - name: Install packages on Debian/Ubuntu
-      apt:
-        name: "{{ packages }}"
-        state: present
-      when: ansible_os_family == "Debian"
-
-    - name: Install packages on RedHat/CentOS
-      yum:
-        name: "{{ packages }}"
-        state: present
-      when: ansible_os_family == "RedHat"
+    - name: Inform about unsupported distribution
+      debug:
+        msg: "This playbook is designed for Fedora, CentOS 8+, or RHEL 8+. Your current distribution ({{ ansible_distribution }}) may not be supported."
+      when: ansible_distribution != "Fedora" and 
+            not (ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 8) and
+            not (ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8)
 
     - name: Install packages on Fedora
-      dnf:
-        name: "{{ packages }}"
-        state: present
+      block:
+        - name: Install package
+          dnf:
+            name: "{{ item }}"
+            state: present
+          loop: "{{ packages }}"
+        - name: Print installation message
+          debug:
+            msg: "Installed package: {{ item }}"
+          loop: "{{ packages }}"
       when: ansible_distribution == "Fedora"
 
     - name: Enable COPR repository for Zellij
@@ -88,11 +83,3 @@
       when: ansible_distribution == "Fedora" or 
             (ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 8) or
             (ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8)
-
-    - name: Inform about unsupported distribution
-      debug:
-        msg: "This playbook is designed for Fedora, CentOS 8+, or RHEL 8+. Your current distribution ({{ ansible_distribution }}) may not be supported."
-      when: ansible_distribution != "Fedora" and 
-            not (ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 8) and
-            not (ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8)
-
