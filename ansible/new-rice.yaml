@@ -68,6 +68,7 @@
         version: main
 
     - name: Run installation script
+      become: yes
       command: ./install.sh
       args:
         chdir: "{{ ansible_env.HOME }}/git/other/pokemon-colorscripts"
