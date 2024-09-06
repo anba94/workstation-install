@@ -65,7 +65,7 @@
       git:
         repo: https://gitlab.com/phoneybadger/pokemon-colorscripts.git
         dest: "{{ ansible_env.HOME }}/git/other/pokemon-colorscripts"
-        version: master
+        version: main
 
     - name: Run installation script
       command: ./install.sh
