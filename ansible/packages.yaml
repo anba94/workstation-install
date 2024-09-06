@@ -78,3 +78,45 @@
       when: ansible_distribution == "Fedora" or 
             (ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 8) or
             (ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8)
+
+---
+- name: Install VSCode and Lens
+  hosts: all
+  become: yes
+  tasks:
+    ## VSCode Installation
+    - name: Import Microsoft GPG key
+      rpm_key:
+        key: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+
+    - name: Add VSCode repository
+      copy:
+        content: |
+          [code]
+          name=Visual Studio Code
+          baseurl=https://packages.microsoft.com/yumrepos/vscode
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+        dest: /etc/yum.repos.d/vscode.repo
+
+    - name: Update DNF cache
+      dnf:
+        update_cache: yes
+
+    - name: Install VSCode
+      dnf:
+        name: code
+        state: present
+
+    ## Lens Installation
+    - name: Add Lens repository
+      command: dnf config-manager --add-repo https://downloads.k8slens.dev/rpm/lens.repo
+      args:
+        creates: /etc/yum.repos.d/lens.repo
+
+    - name: Install Lens
+      dnf:
+        name: lens
+        state: present
