@@ -138,6 +138,6 @@
 
     - name: Change default shell to zsh
       user:
-        name: "{{ ansible_user }}"
+        name: "{{ user_to_change | default(ansible_user_id) }}"
         shell: /bin/zsh
       become: yes
