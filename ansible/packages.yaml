@@ -54,6 +54,13 @@
             not (ansible_distribution == "CentOS" and ansible_distribution_major_version|int >= 8) and
             not (ansible_distribution == "RedHat" and ansible_distribution_major_version|int >= 8)
 
+    - name: Update all packages on Fedora
+      dnf:
+        name: "*"
+        state: latest
+        update_cache: yes
+      become: yes
+      
     - name: Install packages on Fedora
       block:
         - name: Install package
