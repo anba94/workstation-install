@@ -135,3 +135,9 @@
 
     - name: Install Catalina wallpaper
       shell: curl -s https://wallpapers.manishk.dev/install.sh | bash -s Catalina
+
+    - name: Change default shell to zsh
+      user:
+        name: "{{ ansible_user }}"
+        shell: /bin/zsh
+      become: yes
