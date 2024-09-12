@@ -141,3 +141,25 @@
         name: "{{ user_to_change | default(ansible_user_id) }}"
         shell: /bin/zsh
       become: yes
+
+    - name: Configure GNOME settings
+      block:
+        - name: Enable maximize and minimize buttons
+          dconf:
+            key: "/org/gnome/desktop/wm/preferences/button-layout"
+            value: "'appmenu:minimize,maximize,close'"
+            state: present
+
+        - name: Set mouse cursor size to 32
+          dconf:
+            key: "/org/gnome/desktop/interface/cursor-size"
+            value: "32"
+            state: present
+
+        - name: Change icon theme to Yaru Purple Dark
+          dconf:
+            key: "/org/gnome/desktop/interface/icon-theme"
+            value: "'Yaru-purple-dark'"
+            state: present
+      become: yes
+      become_user: "{{ ansible_user_id }}"
