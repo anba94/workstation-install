@@ -142,18 +142,6 @@
         shell: /bin/zsh
       become: yes
 
-    - name: Set timezone to Europe/Berlin
-      become: yes
-      timezone:
-        name: Europe/Berlin
-        state: present
-
-    - name: Set locale to German
-      become: yes
-      locale:
-        name: de_DE.UTF-8
-        state: present
-
     - name: Configure GNOME settings
       block:
         - name: Enable maximize and minimize buttons
