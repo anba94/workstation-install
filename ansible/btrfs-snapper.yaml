@@ -4,7 +4,7 @@
   connection: local
   become: yes
   vars:
-    user: "{{ lookup('env', 'USER') }}"
+    user: "{{ ansible_user_id }}"
 
   tasks:
     - name: Install required packages
@@ -16,39 +16,25 @@
           - python3-dnf-plugin-snapper
         state: present
 
-    - name: Verify BTRFS is the filesystem for root
-      command: findmnt -no FSTYPE /
-      register: root_fs
-      changed_when: false
-      failed_when: root_fs.stdout != "btrfs"
-
-    - name: Verify BTRFS is the filesystem for home
-      command: findmnt -no FSTYPE /home
-      register: home_fs
-      changed_when: false
-      failed_when: home_fs.stdout != "btrfs"
-
-    - name: Create Snapper configuration for root
+    - name: Create root configuration
       command: snapper -c root create-config /
 
-    - name: Create Snapper configuration for home
+    - name: Create home configuration
       command: snapper -c home create-config /home
 
-    - name: Set Snapper configuration for root
-      command: >
-        snapper -c root set-config ALLOW_USERS={{ user }} SYNC_ACL=yes
+    - name: Set root configuration
+      command: snapper -c root set-config ALLOW_USERS={{ user }} SYNC_ACL=yes
 
-    - name: Set Snapper configuration for home
-      command: >
-        snapper -c home set-config ALLOW_USERS={{ user }} SYNC_ACL=yes
+    - name: Set home configuration  
+      command: snapper -c home set-config ALLOW_USERS={{ user }} SYNC_ACL=yes
 
-    - name: Change ownership of root snapshots directory
+    - name: Set group ownership for root snapshots
       file:
         path: /.snapshots
         group: "{{ user }}"
         recurse: yes
 
-    - name: Change ownership of home snapshots directory
+    - name: Set group ownership for home snapshots
       file:
         path: /home/.snapshots
         group: "{{ user }}"
