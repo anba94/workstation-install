@@ -23,19 +23,19 @@
       command: snapper -c home create-config /home
 
     - name: Set root configuration
-      command: snapper -c root set-config ALLOW_USERS={{ user }} SYNC_ACL=yes
+      command: snapper -c root set-config ALLOW_USERS={{ ansible_user_id }} SYNC_ACL=yes
 
     - name: Set home configuration  
-      command: snapper -c home set-config ALLOW_USERS={{ user }} SYNC_ACL=yes
+      command: snapper -c home set-config ALLOW_USERS={{ ansible_user_id }} SYNC_ACL=yes
 
     - name: Set group ownership for root snapshots
       file:
         path: /.snapshots
-        group: "{{ user }}"
+        group: "{{ ansible_user_id }}"
         recurse: yes
 
     - name: Set group ownership for home snapshots
       file:
         path: /home/.snapshots
-        group: "{{ user }}"
+        group: "{{ ansible_user_id }}"
         recurse: yes
