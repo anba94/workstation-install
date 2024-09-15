@@ -163,3 +163,15 @@
             state: present
       become: yes
       become_user: "{{ ansible_user_id }}"
+
+    - name: Set timezone to Europe/Berlin
+      become: true
+      timezone:
+        name: Europe/Berlin
+        state: present
+
+    - name: Set locale to German
+      become: true
+      locale:
+        name: de_DE.UTF-8
+        state: present
