@@ -45,6 +45,7 @@
       - fontconfig
       - xprop
       - keepassxc
+      - ranger
 
   tasks:
     - name: Inform about unsupported distribution
